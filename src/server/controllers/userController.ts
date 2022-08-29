@@ -23,7 +23,7 @@ export const registerUser = async (
     const customError = CustomError(
       error.code,
       error.message,
-      "Error registering user"
+      "Error creating new user"
     );
     next(customError);
   }

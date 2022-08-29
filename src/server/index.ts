@@ -1,7 +1,7 @@
 import Express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { generalError, notFoundError } from "../middleware/errors";
+import { generalError, notFoundError } from "./middleware/errors";
 
 const app = Express();
 

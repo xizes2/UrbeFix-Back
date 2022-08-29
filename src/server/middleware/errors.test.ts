@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import ICustomError from "../interfaces/ICustomError";
+import ICustomError from "../../interfaces/ICustomError";
 import { generalError, notFoundError } from "./errors";
 
 describe("Given an notFoundError function", () => {

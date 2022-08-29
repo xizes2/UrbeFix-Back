@@ -1,0 +1,30 @@
+import chalk from "chalk";
+import Debug from "debug";
+import { NextFunction, Request, Response } from "express";
+import { User } from "../../database/models/User";
+import IUserRegisterData from "../../interfaces/IUserRegisterData";
+import hashCreator from "../../utils/auth";
+import CustomError from "../../utils/CustomError";
+
+const debug = Debug("social-network-isdi:server:usersControllers");
+
+export const registerUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  debug(chalk.bgMagentaBright("registerUser method requested..."));
+  const user: IUserRegisterData = req.body;
+  user.password = (await hashCreator(user.password)) as unknown as string;
+  try {
+    const newUser = await User.create(user);
+    res.status(201).json({ user: newUser });
+  } catch (error) {
+    const customError = CustomError(
+      error.code,
+      error.message,
+      "Error registering user"
+    );
+    next(customError);
+  }
+};

@@ -1,8 +1,8 @@
 USERS:
 
-[POST] /user/register -> recibe los datos de un user lo crea en la BD y devuelve el user recién creado. STATUS: 201
+[POST] /users/register -> recibe los datos de un user lo crea en la BD y devuelve el user recién creado. STATUS: 201
 
-[POST] /user/login -> recibe los datos de un user ya registrado y devuelve el status. STATUS: 201
+[POST] /users/login -> recibe los datos de un user ya registrado y devuelve el status. STATUS: 201
 
 COMPLAINTS:
 

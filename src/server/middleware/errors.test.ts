@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ValidationError } from "express-validation";
 import ICustomError from "../../interfaces/ICustomError";
 import { generalError, notFoundError } from "./errors";
 
@@ -28,7 +29,7 @@ describe("Given an generalError function", () => {
   describe("When its called", () => {
     test("Then it should respond with status the received error code and {error: errorMessage}", async () => {
       const error = {
-        code: 666,
+        statuscode: 666,
         publicMessage: "Total error, hell broke loose!",
       };
       const req = {};
@@ -55,7 +56,7 @@ describe("Given an generalError function", () => {
   describe("When its called without a code", () => {
     test("Then it should return a response with 500", async () => {
       const error = {
-        code: null as number,
+        statuscode: null as number,
         publicMessage: null as string,
       };
       const request = {};
@@ -64,7 +65,7 @@ describe("Given an generalError function", () => {
         json: jest.fn().mockResolvedValue(error.publicMessage),
       };
       const next = jest.fn();
-      const status = 500;
+      const statuscode = 500;
       const resolvedJson = {
         error: "Something went wrong, please try again",
       };
@@ -76,7 +77,7 @@ describe("Given an generalError function", () => {
         next as NextFunction
       );
 
-      expect(response.status).toBeCalledWith(status);
+      expect(response.status).toBeCalledWith(statuscode);
       expect(response.json).toBeCalledWith(resolvedJson);
     });
   });

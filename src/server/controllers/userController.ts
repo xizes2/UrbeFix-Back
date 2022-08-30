@@ -6,7 +6,7 @@ import IUserRegisterData from "../../interfaces/IUserRegisterData";
 import hashCreator from "../../utils/auth";
 import CustomError from "../../utils/CustomError";
 
-const debug = Debug("social-network-isdi:server:usersControllers");
+const debug = Debug("urbefix:server:usersControllers");
 
 export const registerUser = async (
   req: Request,

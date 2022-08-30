@@ -1,8 +1,10 @@
 import chalk from "chalk";
-import debug from "debug";
+import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "express-validation";
 import ICustomError from "../../interfaces/ICustomError";
+
+const debug = Debug("urbefix:server:errors");
 
 export const notFoundError = (req: Request, res: Response) => {
   res.status(404).json({ error: "Endpoint not found" });
@@ -15,16 +17,20 @@ export const generalError = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
-  const errorCode = error.code ?? 500;
-  let errorMessage =
-    error.publicMessage ?? "Something went wrong, please try again";
+  let errorCode;
+  let errorMessage;
 
   if (error instanceof ValidationError) {
-    errorMessage = "Validation error";
-    debug(chalk.bgRedBright(error.details.body));
+    errorCode = error.statuscode ?? 400;
+    errorMessage = error.publicMessage ?? "Validation Error";
+    error.details.body.forEach((errorInfo) => {
+      debug(chalk.bgRedBright(errorInfo.message));
+    });
+  } else {
+    errorCode = error.statuscode ?? 500;
+    errorMessage =
+      error.publicMessage ?? "Something went wrong, please try again";
   }
-
-  debug(chalk.bgRedBright(`Error code: ${errorCode} => ${errorMessage}`));
 
   res.status(errorCode).json({ error: errorMessage });
 };

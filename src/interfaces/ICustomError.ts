@@ -1,5 +1,5 @@
 interface ICustomError extends Error {
-  code: number;
+  statuscode: number;
   publicMessage?: string;
 }
 

@@ -6,7 +6,7 @@ const CustomError = (
   privateMessage: string
 ): ICustomError => {
   const error = new Error(privateMessage) as ICustomError;
-  error.code = code;
+  error.statuscode = code;
   if (publicMessage) {
     error.publicMessage = publicMessage;
   }

@@ -17,7 +17,7 @@ const startServer = (port: number) =>
     server.on("error", (error: ICustomError) => {
       debug(
         chalk.bgRedBright(
-          `Error code: ${error.code}, Error starting the server`
+          `Error code: ${error.statuscode}, Error starting the server`
         )
       );
       reject(error);

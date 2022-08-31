@@ -1,6 +1,6 @@
 interface IUserRegisterData {
   firstName: string;
-  lastName: string;
+  firstSurname: string;
   profileImage?: string;
   userEmail: string;
   password: string;

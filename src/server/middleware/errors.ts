@@ -11,7 +11,7 @@ export const notFoundError = (req: Request, res: Response) => {
 };
 
 export const generalError = (
-  error: ICustomError,
+  error: ICustomError | ValidationError,
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,8 +21,8 @@ export const generalError = (
   let errorMessage;
 
   if (error instanceof ValidationError) {
-    errorCode = error.statuscode ?? 400;
-    errorMessage = error.publicMessage ?? "Validation Error";
+    errorCode = error.statusCode ?? 400;
+    errorMessage = error.message ?? "Validation Error";
     error.details.body.forEach((errorInfo) => {
       debug(chalk.bgRedBright(errorInfo.message));
     });

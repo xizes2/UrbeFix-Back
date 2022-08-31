@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, request, Request, Response } from "express";
 import { ValidationError } from "express-validation";
 import ICustomError from "../../interfaces/ICustomError";
 import { generalError, notFoundError } from "./errors";
@@ -79,6 +79,52 @@ describe("Given an generalError function", () => {
 
       expect(response.status).toBeCalledWith(statuscode);
       expect(response.json).toBeCalledWith(resolvedJson);
+    });
+  });
+
+  describe("When it's called with a ValidationError", () => {
+    test("Then it should send a 400 status and error message", async () => {
+      const errorTest = new ValidationError(
+        {
+          body: [
+            {
+              message: "Error 1",
+              isJoi: true,
+              annotate: () => "",
+              _original: "",
+              name: "ValidationError",
+              details: [],
+            },
+            {
+              message: "Error 2",
+              isJoi: true,
+              annotate: () => "",
+              _original: "",
+              name: "ValidationError",
+              details: [],
+            },
+          ],
+        },
+        { statusCode: 400 }
+      );
+
+      const response = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+      } as Partial<Response>;
+      const next = jest.fn;
+
+      const expectedStatus = 400;
+
+      await generalError(
+        errorTest,
+        request as Request,
+        response as Response,
+        next as NextFunction
+      );
+
+      expect(response.json).toBeCalledWith({ error: "Validation Failed" });
+      expect(response.status).toBeCalledWith(expectedStatus);
     });
   });
 });

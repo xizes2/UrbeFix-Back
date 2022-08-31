@@ -17,7 +17,7 @@ export const registerUser = async (
   const user: IUserRegisterData = req.body;
   user.password = (await hashCreator(user.password)) as unknown as string;
   try {
-    const newUser = await User.create(user);
+    await User.create(user);
     res.status(201).json({ message: "Registered user correctly!" });
   } catch (error) {
     const customError = CustomError(

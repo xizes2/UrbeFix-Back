@@ -18,12 +18,12 @@ export const registerUser = async (
   user.password = (await hashCreator(user.password)) as unknown as string;
   try {
     const newUser = await User.create(user);
-    res.status(201).json({ user: newUser });
+    res.status(201).json({ message: "Registered user correctly!" });
   } catch (error) {
     const customError = CustomError(
       error.code,
       error.message,
-      "Error creating new user"
+      "Validation Failed"
     );
     next(customError);
   }

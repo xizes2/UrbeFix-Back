@@ -12,17 +12,22 @@ describe("Given a method register of a user controller", () => {
     userEmail: "jah@gmail.com",
     password: "987654",
   };
+
   const reqTest = {
     body: {
       user: mockBodyTest,
     },
   } as Partial<Request>;
+
   const responseTest = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   } as Partial<Response>;
+
   const nextTest = jest.fn();
+
   const bcryptTest = jest.fn().mockResolvedValue("test");
+
   (bcrypt.hash as jest.Mock) = bcryptTest;
 
   describe("When it's instantiated with a response object", () => {
@@ -39,8 +44,10 @@ describe("Given a method register of a user controller", () => {
       expect(responseTest.status).toHaveBeenCalledWith(status);
     });
 
-    test("Then it should call the response method json with a new user object", async () => {
-      User.create = jest.fn().mockResolvedValue(mockBodyTest);
+    test("Then it should call the response method json with a message", async () => {
+      const mockMessage = { message: "Registered user correctly!" };
+
+      User.create = jest.fn().mockResolvedValue(reqTest);
 
       await registerUser(
         reqTest as Request,
@@ -48,7 +55,7 @@ describe("Given a method register of a user controller", () => {
         nextTest as NextFunction
       );
 
-      expect(responseTest.json).toHaveBeenCalledWith({ user: mockBodyTest });
+      expect(responseTest.json).toHaveBeenCalledWith(mockMessage);
     });
   });
 
@@ -56,9 +63,10 @@ describe("Given a method register of a user controller", () => {
     test("Then it should throw an error", async () => {
       const customErrorTest = CustomError(
         400,
-        "pete general",
-        "Error creating new user"
+        "General Error",
+        "Validation Failed"
       );
+
       User.create = jest.fn().mockRejectedValue(customErrorTest);
 
       await registerUser(

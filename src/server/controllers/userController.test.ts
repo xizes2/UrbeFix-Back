@@ -7,7 +7,7 @@ import CustomError from "../../utils/CustomError";
 describe("Given a method register of a user controller", () => {
   const mockBodyTest = {
     firsName: "Jah",
-    lastName: "Rastafaray",
+    firstSurname: "Rastafaray",
     profileImage: "jah.jpg",
     userEmail: "jah@gmail.com",
     password: "987654",

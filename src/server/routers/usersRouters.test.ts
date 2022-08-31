@@ -9,7 +9,7 @@ let mongoServer: MongoMemoryServer;
 
 const userRegisterData = {
   firstName: "Julia",
-  lastName: "Amada",
+  firstSurname: "Amada",
   userEmail: "julia@gmail.com",
   password: "juliapass",
 };
@@ -42,7 +42,7 @@ describe("Given the endpoint POST /users/register", () => {
     test("Then it should response with a status 400 and a message 'Error creating new user'", async () => {
       const userDataWrong = {
         firstName: "Arcus",
-        lastName: "Ukun",
+        firstSurname: "Ukun",
         userEmail: "arcus@gmail.com",
       };
       const errorMessage = "Validation Failed";

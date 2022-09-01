@@ -2,8 +2,12 @@ import chalk from "chalk";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { User } from "../../database/models/User";
-import IUserRegisterData from "../../interfaces/IUserRegisterData";
-import hashCreator from "../../utils/auth";
+import ICustomJwtPayload from "../../interfaces/ICustomJwtPayload";
+import {
+  IUserRegisterData,
+  IUserLoginData,
+} from "../../interfaces/IUserRegisterData";
+import { hashCreator, createToken, hashCompare } from "../../utils/auth";
 import CustomError from "../../utils/CustomError";
 
 const debug = Debug("urbefix:server:usersControllers");
@@ -27,4 +31,76 @@ export const registerUser = async (
     );
     next(customError);
   }
+};
+
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  debug(chalk.bgMagentaBright("loginUser method requested..."));
+
+  const user: IUserLoginData = req.body;
+
+  let findUsers: Array<IUserLoginData>;
+
+  const userError = CustomError(
+    403,
+    "User not found",
+    "User or password not valid"
+  );
+
+  try {
+    findUsers = await User.find({ userEmail: user.userEmail });
+    if (findUsers.length === 0) {
+      next(userError);
+      debug(chalk.bgRedBright("No users registered"));
+
+      return;
+    }
+  } catch (error) {
+    const finalError = CustomError(
+      403,
+      "User invalid",
+      "User or password not valid"
+    );
+    next(finalError);
+    debug(chalk.bgRedBright(finalError.message));
+    return;
+  }
+
+  try {
+    const isPasswordValid = await hashCompare(
+      user.password,
+      findUsers[0].password
+    );
+    if (!isPasswordValid) {
+      userError.message = "User or password not valid";
+      next(userError);
+      debug(chalk.bgRedBright(userError.message));
+      return;
+    }
+  } catch (error) {
+    const finalError = CustomError(
+      403,
+      "Password not found",
+      "User or password invalid "
+    );
+    next(finalError);
+    debug(chalk.bgRedBright(finalError.message));
+    return;
+  }
+
+  const payLoad: ICustomJwtPayload = {
+    id: findUsers[0].id,
+    userEmail: findUsers[0].userEmail,
+  };
+
+  const responseData = {
+    user: {
+      token: createToken(payLoad),
+    },
+  };
+  debug(chalk.bgGreenBright("Login completed!"));
+  res.status(200).json(responseData);
 };

@@ -1,6 +1,6 @@
 import Router from "express";
 import { validate } from "express-validation";
-import { registerUser } from "../controllers/userController";
+import { loginUser, registerUser } from "../controllers/userController";
 import userRegisterDataSchema from "../schemas/userRegisterDataSchema";
 
 const usersRouter = Router();
@@ -10,5 +10,6 @@ usersRouter.post(
   validate(userRegisterDataSchema, {}, { abortEarly: false }),
   registerUser
 );
+usersRouter.post("/login", loginUser);
 
 export default usersRouter;

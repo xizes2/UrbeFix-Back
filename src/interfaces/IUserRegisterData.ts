@@ -1,4 +1,4 @@
-interface IUserRegisterData {
+export interface IUserRegisterData {
   firstName: string;
   firstSurname: string;
   profileImage?: string;
@@ -6,4 +6,8 @@ interface IUserRegisterData {
   password: string;
 }
 
-export default IUserRegisterData;
+export interface IUserLoginData {
+  id: string;
+  userEmail: string;
+  password: string;
+}

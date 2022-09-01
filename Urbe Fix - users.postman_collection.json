@@ -1,95 +1,82 @@
 {
-	"info": {
-		"_postman_id": "b4290b2d-f575-4f75-a788-2099067985b6",
-		"name": "Urbe Fix - users",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "22240168"
-	},
-	"item": [
-		{
-			"name": "New Request",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{local_url}}users/register",
-					"host": [
-						"{{local_url}}users"
-					],
-					"path": [
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "New Request",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \n  \"userEmail\": \"ñkdsjs@gmail.com\",\n  \"password\": \"654321\"\n  }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{local_url}}/users/login",
-					"host": [
-						"{{local_url}}"
-					],
-					"path": [
-						"users",
-						"login"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "local_url",
-			"value": "http://localhost:4001/",
-			"type": "string"
-		},
-		{
-			"key": "production_url",
-			"value": "https://f-pauli-final-project-2022-bcn.herokuapp.com/",
-			"type": "string"
-		}
-	]
+  "info": {
+    "_postman_id": "b4290b2d-f575-4f75-a788-2099067985b6",
+    "name": "Urbe Fix - users",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22240168"
+  },
+  "item": [
+    {
+      "name": "New Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{local_url}}users/register",
+          "host": ["{{local_url}}users"],
+          "path": ["register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \n  \"userEmail\": \"ñkdsjs@gmail.com\",\n  \"password\": \"654321\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{local_url}}/users/login",
+          "host": ["{{local_url}}"],
+          "path": ["users", "login"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "local_url",
+      "value": "http://localhost:4001/",
+      "type": "string"
+    },
+    {
+      "key": "production_url",
+      "value": "https://f-pauli-final-project-2022-bcn.herokuapp.com/",
+      "type": "string"
+    }
+  ]
 }

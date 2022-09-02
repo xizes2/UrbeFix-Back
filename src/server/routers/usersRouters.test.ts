@@ -6,13 +6,6 @@ import mongoose from "mongoose";
 
 let mongoServer: MongoMemoryServer;
 
-const userRegisterData = {
-  firstName: "Julia",
-  firstSurname: "Amada",
-  userEmail: "julia@gmail.com",
-  password: "juliapass",
-};
-
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mockedDbUrl = mongoServer.getUri();
@@ -26,8 +19,14 @@ afterAll(async () => {
 });
 
 describe("Given the endpoint POST /users/register", () => {
+  const userRegisterData = {
+    firstName: "Julia",
+    firstSurname: "Amada",
+    userEmail: "julia@gmail.com",
+    password: "juliapass",
+  };
   describe("When it receives a request with username 'Julia', a last name 'Amada', user email 'julia@gmail.com' and password 'juliapass' ", () => {
-    test("Then it should respond with status 201, and the new user data", async () => {
+    test("Then it should respond with status 201, a success message", async () => {
       const correctMessage = "Registered user correctly!";
       const { body } = await request(app)
         .post("/users/register")
@@ -52,6 +51,38 @@ describe("Given the endpoint POST /users/register", () => {
         .expect(400);
 
       expect(body).toHaveProperty("error", errorMessage);
+    });
+  });
+});
+
+describe("Given the endpoint POST /users/login", () => {
+  describe("When it receives a request with user email 'julia@gmail.com' and password 'juliapass' ", () => {
+    test("Then it should respond with status 200, and an object cocontaining the user token", async () => {
+      const userLoginData = {
+        userEmail: "julia@gmail.com",
+        password: "juliapass",
+      };
+
+      const { body } = await request(app)
+        .post("/users/login")
+        .send(userLoginData)
+        .expect(200);
+      expect(body).toHaveProperty("user");
+    });
+  });
+
+  describe("When it receives a request with user email 'julia@gmail.com' and wrong  password ", () => {
+    test("Then it should respond with status 403 and an error message", async () => {
+      const userLoginData = {
+        userEmail: "julia@gmail.com",
+        password: "nuriapass",
+      };
+
+      const { body } = await request(app)
+        .post("/users/login")
+        .send(userLoginData)
+        .expect(403);
+      expect(body).toHaveProperty("error");
     });
   });
 });

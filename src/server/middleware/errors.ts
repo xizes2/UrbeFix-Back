@@ -19,10 +19,9 @@ export const generalError = (
 ) => {
   let errorCode;
   let errorMessage;
-
   if (error instanceof ValidationError) {
     errorCode = error.statusCode ?? 400;
-    errorMessage = error.message ?? "Validation Error";
+    errorMessage = error.message ?? "Unable to complete operation";
     error.details.body.forEach((errorInfo) => {
       debug(chalk.bgRedBright(errorInfo.message));
     });

@@ -143,8 +143,8 @@ describe("Given a method login function of a user controller", () => {
         User.find = jest.fn().mockReturnValue([]);
         const error = CustomError(
           403,
-          "User not found",
-          "User or password not valid"
+          "User or password not valid",
+          "Login error"
         );
 
         await loginUser(
@@ -161,8 +161,8 @@ describe("Given a method login function of a user controller", () => {
       test("Then it should call the next function with the error", async () => {
         const error = CustomError(
           403,
-          "User invalid",
-          "User or password not valid"
+          "User or password not valid",
+          "User not valid"
         );
         User.find = jest.fn().mockRejectedValue(new Error());
 
@@ -183,8 +183,8 @@ describe("Given a method login function of a user controller", () => {
 
         const error = CustomError(
           403,
-          "Password not found",
-          "User or password invalid "
+          "User or password not valid",
+          "Password not found"
         );
 
         await loginUser(
@@ -209,8 +209,8 @@ describe("Given a method login function of a user controller", () => {
 
         const userError = CustomError(
           403,
-          "Password invalid",
-          "User or password not valid"
+          "User or password not valid",
+          "Password not valid"
         );
 
         await loginUser(

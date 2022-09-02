@@ -83,8 +83,8 @@ export const loginUser = async (
   } catch (error) {
     const finalError = CustomError(
       403,
-      "Password not found",
-      "User or password invalid "
+      "User or password not valid",
+      "Password not found"
     );
     debug(chalk.bgRedBright(finalError.message));
     next(finalError);

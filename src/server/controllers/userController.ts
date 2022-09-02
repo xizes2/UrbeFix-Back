@@ -46,26 +46,26 @@ export const loginUser = async (
 
   const userError = CustomError(
     403,
-    "User not found",
-    "User or password not valid"
+    "User or password not valid",
+    "Login error"
   );
 
   try {
     findUsers = await User.find({ userEmail: user.userEmail });
-    if (findUsers.length === 0) {
-      next(userError);
-      debug(chalk.bgRedBright("No users registered"));
 
+    if (findUsers.length === 0) {
+      debug(chalk.bgRedBright("User not registered"));
+      next(userError);
       return;
     }
   } catch (error) {
     const finalError = CustomError(
       403,
-      "User invalid",
-      "User or password not valid"
+      "User or password not valid",
+      "User not valid"
     );
-    next(finalError);
     debug(chalk.bgRedBright(finalError.message));
+    next(finalError);
     return;
   }
 
@@ -75,9 +75,9 @@ export const loginUser = async (
       findUsers[0].password
     );
     if (!isPasswordValid) {
-      userError.message = "User or password not valid";
-      next(userError);
+      userError.message = "Password not valid";
       debug(chalk.bgRedBright(userError.message));
+      next(userError);
       return;
     }
   } catch (error) {
@@ -86,8 +86,8 @@ export const loginUser = async (
       "Password not found",
       "User or password invalid "
     );
-    next(finalError);
     debug(chalk.bgRedBright(finalError.message));
+    next(finalError);
     return;
   }
 

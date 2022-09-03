@@ -20,4 +20,3 @@ jobs:
         env:
           SECRET: ${{ secrets.SECRET }}
           REACT_APP_API_URL: ${{env.REACT_APP_API_URL}}
-          REACT_APP_LOCAL_MEMES_API_URL: ${{env.REACT_APP_LOCAL_MEMES_API_URL}}

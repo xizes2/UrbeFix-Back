@@ -1,8 +1,8 @@
 import Router from "express";
 import { validate } from "express-validation";
-import { loginUser, registerUser } from "../controllers/userController";
-import userLoginDataSchema from "../schemas/userLoginDataSchema";
-import userRegisterDataSchema from "../schemas/userRegisterDataSchema";
+import { loginUser, registerUser } from "../../controllers/user/userController";
+import userLoginDataSchema from "../../schemas/users/userLoginDataSchema";
+import userRegisterDataSchema from "../../schemas/users/userRegisterDataSchema";
 
 const usersRouter = Router();
 

@@ -1,14 +1,14 @@
 import chalk from "chalk";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
-import { User } from "../../database/models/User";
-import ICustomJwtPayload from "../../interfaces/ICustomJwtPayload";
+import { User } from "../../../database/models/User";
+import ICustomJwtPayload from "../../../interfaces/ICustomJwtPayload";
 import {
-  IUserRegisterData,
   IUserLoginData,
-} from "../../interfaces/IUserRegisterData";
-import { hashCreator, createToken, hashCompare } from "../../utils/auth";
-import CustomError from "../../utils/CustomError";
+  IUserRegisterData,
+} from "../../../interfaces/IUserRegisterData";
+import { createToken, hashCompare, hashCreator } from "../../../utils/auth";
+import CustomError from "../../../utils/CustomError";
 
 const debug = Debug("urbefix:server:usersControllers");
 

@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { User } from "../../database/models/User";
+import { User } from "../../../database/models/User";
 import { loginUser, registerUser } from "./userController";
-import CustomError from "../../utils/CustomError";
+import CustomError from "../../../utils/CustomError";
 
 const mockHashCreateValue: boolean | jest.Mock = true;
 
 let mockHashCompareValue = true;
 
-jest.mock("../../utils/auth", () => ({
-  ...jest.requireActual("../../utils/auth"),
+jest.mock("../../../utils/auth", () => ({
+  ...jest.requireActual("../../../utils/auth"),
   createToken: () => jest.fn().mockReturnValue("#"),
   hashCreator: () => mockHashCreateValue,
   hashCompare: () => mockHashCompareValue,

@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { error } from "console";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import { User } from "../../../database/models/User";
@@ -19,8 +20,25 @@ export const registerUser = async (
 ) => {
   debug(chalk.bgMagentaBright("registerUser method requested..."));
   const user: IUserRegisterData = req.body;
-  user.password = (await hashCreator(user.password)) as unknown as string;
   try {
+    user.password = (await hashCreator(user.password)) as unknown as string;
+
+    const checkUser = await User.find({
+      userEmail: user.userEmail,
+    });
+
+    if (checkUser.length > 0) {
+      const registerError = CustomError(
+        400,
+        "This email already exists",
+        "This email already exists"
+      );
+
+      debug(chalk.bgRedBright(registerError));
+      next(registerError);
+      return;
+    }
+
     await User.create(user);
     res.status(201).json({ message: "Registered user correctly!" });
   } catch (error) {

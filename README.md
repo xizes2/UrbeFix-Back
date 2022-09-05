@@ -14,7 +14,7 @@ COMPLAINTS:
 
 [PUT] /complaint/update/:idComplaint -> recibe una queja, la modifica en la BD y devuelve la queja modificada. STATUS: 200
 
-[DELETE] /complaint/delete/:idRobot -> elimina de la BD una queja por id y devuelve el status. STATUS: 200
+[DELETE] /complaint/delete/:idComplaint -> elimina de la BD una queja por id y devuelve el status. STATUS: 200
 
 Bad request - STATUS: 400
 Unauthorized - STATUS: 401

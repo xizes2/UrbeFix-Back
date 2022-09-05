@@ -8,6 +8,6 @@ import { authentication } from "../../middleware/authentication";
 const complaintsRouter = Router();
 
 complaintsRouter.get("/", getAllComplaints);
-complaintsRouter.delete("/:id", authentication, deleteComplaint);
+complaintsRouter.delete("/delete/:id", authentication, deleteComplaint);
 
 export default complaintsRouter;

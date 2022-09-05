@@ -5,7 +5,7 @@ import connectDatabase from "../../../database";
 import Complaint from "../../../database/models/Complaint";
 import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
 import CustomError from "../../../utils/CustomError";
-import getAllComplaints from "./complaintsController";
+import { getAllComplaints } from "./complaintsController";
 
 describe("Given a method getAllComplaints of a complaints controller", () => {
   const mockComplaintsArray: IComplaintRegisterData = {

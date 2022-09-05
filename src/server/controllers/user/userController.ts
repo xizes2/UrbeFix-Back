@@ -22,7 +22,7 @@ export const registerUser = async (
   user.password = (await hashCreator(user.password)) as unknown as string;
   try {
     const checkUser = await User.find({
-      userEmail: user.userEmail as String,
+      userEmail: user.userEmail,
     });
 
     if (checkUser.length > 0) {

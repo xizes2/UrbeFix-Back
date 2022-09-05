@@ -36,4 +36,28 @@ export const getAllComplaints = async (
   }
 };
 
-export default getAllComplaints;
+export const deleteComplaint = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  debug(chalk.bgBlueBright("getAllComplaints method requested..."));
+
+  const { id } = req.params;
+
+  try {
+    const deleteComplaintItem = await Complaint.findByIdAndDelete(id);
+    if (deleteComplaintItem) {
+      debug(chalk.bgGreenBright("Complaint deleted correctly!"));
+      res.status(200).json({ message: "Complaint deleted correctly!" });
+    }
+  } catch (error) {
+    const newError = CustomError(
+      404,
+      "Error while deleting wish",
+      "Error while deleting wish"
+    );
+    debug(chalk.bgRedBright("Error while deleting complaint"));
+    next(newError);
+  }
+};

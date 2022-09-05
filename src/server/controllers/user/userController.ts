@@ -21,6 +21,21 @@ export const registerUser = async (
   const user: IUserRegisterData = req.body;
   user.password = (await hashCreator(user.password)) as unknown as string;
   try {
+    const checkUser = await User.find({
+      userEmail: user.userEmail,
+    });
+
+    if (checkUser.length > 0) {
+      const registerError = CustomError(
+        400,
+        "This email already exists",
+        "This email already exists"
+      );
+
+      debug(chalk.bgRedBright(registerError));
+      next(registerError);
+      return;
+    }
     await User.create(user);
     res.status(201).json({ message: "Registered user correctly!" });
   } catch (error) {

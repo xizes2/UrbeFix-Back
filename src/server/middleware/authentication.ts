@@ -27,7 +27,6 @@ export const authentication = (
     next(error);
     return;
   }
-
   req.payload = tokenData as CustomRequest;
   next();
 };

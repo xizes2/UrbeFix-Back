@@ -1,21 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import bcrypt from "bcryptjs";
 import { User } from "../../../database/models/User";
 import { loginUser, registerUser } from "./userController";
 import CustomError from "../../../utils/CustomError";
 
-const mockHashCreateValue: boolean | jest.Mock = true;
-
-let mockHashCompareValue = true;
+let mockHashCompareValue: any = true;
 
 jest.mock("../../../utils/auth", () => ({
   ...jest.requireActual("../../../utils/auth"),
-  createToken: () => jest.fn().mockReturnValue("#"),
-  hashCreator: () => mockHashCreateValue,
+  hashCreator: () => jest.fn().mockReturnValue("#"),
+  createToken: () => "#",
   hashCompare: () => mockHashCompareValue,
 }));
 
 describe("Given a method register of a user controller", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   const mockBodyTest = {
     firsName: "Jah",
     firstSurname: "Rastafaray",
@@ -35,17 +36,15 @@ describe("Given a method register of a user controller", () => {
     json: jest.fn(),
   } as Partial<Response>;
 
-  const nextTest = jest.fn();
+  const nextTest = jest.fn() as NextFunction;
 
-  const bcryptTest = jest.fn().mockResolvedValue("test");
-
-  (bcrypt.hash as jest.Mock) = bcryptTest;
+  User.create = jest.fn().mockReturnValue(mockBodyTest);
 
   describe("When it's instantiated with a response object", () => {
     test("Then it should call the response method status with 201", async () => {
-      const status = 201;
+      User.find = jest.fn().mockReturnValue([]);
 
-      User.create = jest.fn();
+      const status = 201;
 
       await registerUser(
         reqTest as Request,
@@ -95,29 +94,23 @@ describe("Given a method login function of a user controller", () => {
     jest.clearAllMocks();
   });
 
-  const fakeUser = {
+  const loginData = {
     userEmail: "test@Login",
     password: "123456",
   };
 
-  const fakeUserLogged = {
-    _id: "12345",
-    userName: "test@Login",
-    password: "123456",
-  };
-
-  const requestLoginTest: Partial<Request> = { body: fakeUser };
+  const requestLoginTest: Partial<Request> = { body: loginData };
   const responseLoginTest: Partial<Response> = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   };
-  const next: Partial<NextFunction> = jest.fn();
-
-  User.find = jest.fn().mockReturnValue([fakeUserLogged]);
+  const next = jest.fn() as NextFunction;
 
   describe("When invoked with a request, response and next params", () => {
     test("Then it should call status function with code 200", async () => {
-      mockHashCompareValue = true;
+      User.find = jest.fn().mockReturnValue([loginData]);
+      mockHashCompareValue = jest.fn().mockReturnValue(true);
+
       await loginUser(
         requestLoginTest as Request,
         responseLoginTest as Response,

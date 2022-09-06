@@ -3,20 +3,20 @@ import { User } from "../../../database/models/User";
 import { loginUser, registerUser } from "./userController";
 import CustomError from "../../../utils/CustomError";
 
-let mockHashCompareValue: boolean = true;
+let mockHashCompareValue = true;
 
 jest.mock("../../../utils/auth", () => ({
   ...jest.requireActual("../../../utils/auth"),
   hashCreator: () => jest.fn().mockReturnValue("#"),
-  createToken: () => "#",
+  createToken: () => jest.fn().mockReturnValue("#"),
   hashCompare: () => mockHashCompareValue,
 }));
 
-describe("Given a method register of a user controller", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
+describe("Given a method register of a user controller", () => {
   const mockBodyTest = {
     firsName: "Jah",
     firstSurname: "Rastafaray",
@@ -38,11 +38,10 @@ describe("Given a method register of a user controller", () => {
 
   const nextTest = jest.fn() as NextFunction;
 
-  User.create = jest.fn().mockReturnValue(mockBodyTest);
-
   describe("When it's instantiated with a response object", () => {
     test("Then it should call the response method status with 201", async () => {
-      User.find = jest.fn().mockReturnValue([]);
+      User.create = jest.fn().mockReturnValue(mockBodyTest);
+      User.find = jest.fn().mockResolvedValue([]);
 
       const status = 201;
 
@@ -84,6 +83,27 @@ describe("Given a method register of a user controller", () => {
         responseTest as Response,
         nextTest as NextFunction
       );
+      expect(nextTest).toHaveBeenCalledWith(customErrorTest);
+    });
+  });
+
+  describe("When it receives a response with an existing email", () => {
+    test("Then it should throw an error", async () => {
+      const customErrorTest = CustomError(
+        400,
+        "This email already exists",
+        "This email already exists"
+      );
+      User.find = jest.fn().mockResolvedValue([mockBodyTest]);
+
+      User.create = jest.fn().mockRejectedValue(customErrorTest);
+
+      await registerUser(
+        reqTest as Request,
+        responseTest as Response,
+        nextTest as NextFunction
+      );
+
       expect(nextTest).toHaveBeenCalledWith(customErrorTest);
     });
   });

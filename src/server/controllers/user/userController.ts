@@ -19,23 +19,25 @@ export const registerUser = async (
 ) => {
   debug(chalk.bgMagentaBright("registerUser method requested..."));
   const user: IUserRegisterData = req.body;
-  user.password = (await hashCreator(user.password)) as unknown as string;
+
+  const checkUser = await User.find({
+    userEmail: user.userEmail,
+  });
+
+  if (checkUser.length > 0) {
+    const registerError = CustomError(
+      400,
+      "This email already exists",
+      "This email already exists"
+    );
+
+    debug(chalk.bgRedBright(registerError));
+    next(registerError);
+    return;
+  }
+
   try {
-    const checkUser = await User.find({
-      userEmail: user.userEmail,
-    });
-
-    if (checkUser.length > 0) {
-      const registerError = CustomError(
-        400,
-        "This email already exists",
-        "This email already exists"
-      );
-
-      debug(chalk.bgRedBright(registerError));
-      next(registerError);
-      return;
-    }
+    user.password = (await hashCreator(user.password)) as unknown as string;
     await User.create(user);
     res.status(201).json({ message: "Registered user correctly!" });
   } catch (error) {

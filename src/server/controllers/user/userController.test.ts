@@ -3,7 +3,7 @@ import { User } from "../../../database/models/User";
 import { loginUser, registerUser } from "./userController";
 import CustomError from "../../../utils/CustomError";
 
-let mockHashCompareValue: any = true;
+let mockHashCompareValue: boolean = true;
 
 jest.mock("../../../utils/auth", () => ({
   ...jest.requireActual("../../../utils/auth"),
@@ -109,7 +109,6 @@ describe("Given a method login function of a user controller", () => {
   describe("When invoked with a request, response and next params", () => {
     test("Then it should call status function with code 200", async () => {
       User.find = jest.fn().mockReturnValue([loginData]);
-      mockHashCompareValue = jest.fn().mockReturnValue(true);
 
       await loginUser(
         requestLoginTest as Request,

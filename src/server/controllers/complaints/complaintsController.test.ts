@@ -5,7 +5,11 @@ import connectDatabase from "../../../database";
 import Complaint from "../../../database/models/Complaint";
 import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
 import CustomError from "../../../utils/CustomError";
-import { deleteComplaint, getAllComplaints } from "./complaintsController";
+import {
+  deleteComplaint,
+  getAllComplaints,
+  getComplaint,
+} from "./complaintsController";
 
 describe("Given a method getAllComplaints of a complaints controller", () => {
   const mockComplaintsArray: IComplaintRegisterData = {
@@ -154,6 +158,93 @@ describe("Given a method deleteComplaint of a complaints controller", () => {
       );
 
       expect(nextTest).toHaveBeenCalledWith(idError);
+    });
+  });
+});
+
+describe("Given a method getComplaint of a complaints controller", () => {
+  const mockComplaint = {
+    category: "Contenedores de Resíduos",
+    countComplaints: "1",
+    creationDate: "2022-09-06T11:13:00.000Z",
+    description: "contenedor lleno",
+    image:
+      "https://thumbs.dreamstime.com/z/contenedor-lleno-dos-y-muchos-bolsos-de-basura-en-la-calle-ciudad-monta%C3%B1a-146937943.jpg",
+    title: "Contenedor lleno",
+    id: "6318d3f81cd4447cf4787098",
+  };
+
+  const reqTest = {
+    params: { id: mockComplaint.id },
+  } as Partial<Request>;
+
+  const responseTest = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
+
+  const nextTest = jest.fn() as NextFunction;
+
+  describe("When instantitated with a request containing an id", () => {
+    test("Then it should show the complaint with that id", async () => {
+      const status = 200;
+
+      const expectedResponse = mockComplaint;
+
+      Complaint.findById = jest.fn().mockReturnValue(mockComplaint);
+
+      await getComplaint(
+        reqTest as Request,
+        responseTest as Response,
+        nextTest as NextFunction
+      );
+
+      expect(responseTest.status).toHaveBeenCalledWith(status);
+      expect(responseTest.json).toHaveBeenCalledWith(expectedResponse);
+    });
+  });
+
+  describe("When instantitated with a request containing an invalid id", () => {
+    test("Then it should next an not found error", async () => {
+      const idError = CustomError(
+        404,
+        "Complaint not found",
+        "No complaint with this id"
+      );
+
+      const expectedResponse = idError;
+
+      Complaint.findById = jest.fn().mockReturnValue("");
+
+      await getComplaint(
+        reqTest as Request,
+        responseTest as Response,
+        nextTest as NextFunction
+      );
+
+      expect(nextTest).toHaveBeenCalledWith(expectedResponse);
+    });
+  });
+
+  describe("When instantitated with a request containing an invalid id", () => {
+    test("Then it should next an not found error", async () => {
+      const idError = CustomError(
+        400,
+        "Error while searching complaint",
+        "Error while searching complaint"
+      );
+
+      const expectedResponse = idError;
+
+      Complaint.findById = jest.fn().mockRejectedValue(idError);
+
+      await getComplaint(
+        reqTest as Request,
+        responseTest as Response,
+        nextTest as NextFunction
+      );
+
+      expect(nextTest).toHaveBeenCalledWith(expectedResponse);
     });
   });
 });

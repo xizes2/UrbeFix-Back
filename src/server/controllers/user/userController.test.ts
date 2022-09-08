@@ -154,7 +154,7 @@ describe("Given a method login function of a user controller", () => {
       test("Then it should call the next function with the created error", async () => {
         User.find = jest.fn().mockReturnValue([]);
         const error = CustomError(
-          403,
+          401,
           "User or password not valid",
           "Login error"
         );
@@ -172,7 +172,7 @@ describe("Given a method login function of a user controller", () => {
     describe("When the user's data don't match", () => {
       test("Then it should call the next function with the error", async () => {
         const error = CustomError(
-          403,
+          401,
           "User or password not valid",
           "User not valid"
         );
@@ -194,7 +194,7 @@ describe("Given a method login function of a user controller", () => {
         mockHashCompareValue = false;
 
         const error = CustomError(
-          403,
+          401,
           "User or password not valid",
           "Password not found"
         );
@@ -220,7 +220,7 @@ describe("Given a method login function of a user controller", () => {
         mockHashCompareValue = false;
 
         const userError = CustomError(
-          403,
+          401,
           "User or password not valid",
           "Password not valid"
         );

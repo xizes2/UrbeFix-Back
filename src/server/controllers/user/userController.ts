@@ -62,7 +62,7 @@ export const loginUser = async (
   let findUsers: Array<IUserLoginData>;
 
   const userError = CustomError(
-    403,
+    401,
     "User or password not valid",
     "Login error"
   );
@@ -77,7 +77,7 @@ export const loginUser = async (
     }
   } catch (error) {
     const finalError = CustomError(
-      403,
+      401,
       "User or password not valid",
       "User not valid"
     );
@@ -99,7 +99,7 @@ export const loginUser = async (
     }
   } catch (error) {
     const finalError = CustomError(
-      403,
+      401,
       "User or password not valid",
       "Password not found"
     );

@@ -6,6 +6,7 @@ const userSchema = new Schema({
   profileImage: { type: String },
   userEmail: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  complaints: [{ type: Schema.Types.ObjectId, ref: "Complaint" }],
 });
 
 export const User = model("User", userSchema, "users");

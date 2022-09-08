@@ -72,7 +72,7 @@ describe("Given the endpoint POST /users/login", () => {
   });
 
   describe("When it receives a request with user email 'julia@gmail.com' and wrong  password ", () => {
-    test("Then it should respond with status 403 and an error message", async () => {
+    test("Then it should respond with status 401 and an error message", async () => {
       const userLoginData = {
         userEmail: "julia@gmail.com",
         password: "nuriapass",
@@ -81,7 +81,7 @@ describe("Given the endpoint POST /users/login", () => {
       const { body } = await request(app)
         .post("/users/login")
         .send(userLoginData)
-        .expect(403);
+        .expect(401);
       expect(body).toHaveProperty("error");
     });
   });

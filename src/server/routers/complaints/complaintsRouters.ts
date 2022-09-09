@@ -10,6 +10,6 @@ const complaintsRouter = Router();
 
 complaintsRouter.get("/", getAllComplaints);
 complaintsRouter.delete("/delete/:id", authentication, deleteComplaint);
-complaintsRouter.get("/:id", getComplaint);
+complaintsRouter.get("/details/:id", getComplaint);
 
 export default complaintsRouter;

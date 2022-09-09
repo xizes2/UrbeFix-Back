@@ -189,13 +189,14 @@ describe("Given a method getComplaint of a complaints controller", () => {
     test("Then it should show the complaint with that id", async () => {
       const status = 200;
 
-      const expectedResponse = mockComplaint;
+      const expectedResponse = { complaintItem: mockComplaint };
 
       Complaint.findById = jest.fn().mockReturnValue(mockComplaint);
 
       await getComplaint(
         reqTest as Request,
         responseTest as Response,
+
         nextTest as NextFunction
       );
 
@@ -207,31 +208,9 @@ describe("Given a method getComplaint of a complaints controller", () => {
   describe("When instantitated with a request containing an invalid id", () => {
     test("Then it should next an not found error", async () => {
       const idError = CustomError(
-        404,
-        "Complaint not found",
-        "No complaint with this id"
-      );
-
-      const expectedResponse = idError;
-
-      Complaint.findById = jest.fn().mockReturnValue("");
-
-      await getComplaint(
-        reqTest as Request,
-        responseTest as Response,
-        nextTest as NextFunction
-      );
-
-      expect(nextTest).toHaveBeenCalledWith(expectedResponse);
-    });
-  });
-
-  describe("When instantitated with a request containing an invalid id", () => {
-    test("Then it should next an not found error", async () => {
-      const idError = CustomError(
         400,
-        "Error while searching complaint",
-        "Error while searching complaint"
+        "No complaints found.",
+        "No complaints found."
       );
 
       const expectedResponse = idError;

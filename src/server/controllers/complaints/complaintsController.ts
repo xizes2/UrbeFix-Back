@@ -78,30 +78,19 @@ export const getComplaint = async (
 ) => {
   debug(chalk.bgBlueBright("getComplaint method requested..."));
 
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
     const complaintItem = await Complaint.findById(id);
 
-    if (complaintItem) {
-      debug(chalk.bgGreenBright("Complaint found!"));
-      res.status(200).json(complaintItem);
-    } else if (!complaintItem) {
-      const complaintNotFoundError = CustomError(
-        404,
-        "Complaint not found",
-        "No complaint with this id"
-      );
-      debug(chalk.bgRedBright("No complaint with this id"));
-      next(complaintNotFoundError);
-    }
+    debug(chalk.bgGreenBright("Complaint found!"));
+    res.status(200).json({ complaintItem });
   } catch (error) {
     const newError = CustomError(
       400,
-      "Error while searching complaint",
-      "Error while searching complaint"
+      "No complaints found.",
+      "No complaints found."
     );
-    debug(chalk.bgRedBright("Error while deleting complaint"));
+    debug(chalk.bgRedBright("No complaints found."));
     next(newError);
   }
 };

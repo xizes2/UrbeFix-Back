@@ -94,3 +94,23 @@ export const getComplaint = async (
     next(newError);
   }
 };
+
+export const createComplaint = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const complaint: IComplaintRegisterData = req.body;
+  try {
+    const newComplaint = await Complaint.create(complaint);
+    res.status(201).json({ newComplaint });
+  } catch (error) {
+    const newError = CustomError(
+      400,
+      "Error creating a complaint",
+      "Couldn't create the complaint"
+    );
+
+    next(newError);
+  }
+};

@@ -6,6 +6,7 @@ import Complaint from "../../../database/models/Complaint";
 import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
 import CustomError from "../../../utils/CustomError";
 import {
+  createComplaint,
   deleteComplaint,
   getAllComplaints,
   getComplaint,
@@ -224,6 +225,63 @@ describe("Given a method getComplaint of a complaints controller", () => {
       );
 
       expect(nextTest).toHaveBeenCalledWith(expectedResponse);
+    });
+  });
+
+  describe("Given a complaints controller", () => {
+    const mockComplaint = {
+      category: "Bicing",
+      title: "Bici rota",
+      description: "freno roto",
+      countComplaint: 1,
+      image: "biciRota.jpg",
+      location: "El Born",
+    };
+    describe("When its createComplaint method is invoked", () => {
+      test("then it should call the status method with a 201 and json with the complaint created", async () => {
+        const req = {} as Partial<Request>;
+        const res: Partial<Response> = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn().mockResolvedValue({ newComplaint: mockComplaint }),
+        };
+
+        const next = jest.fn();
+        Complaint.create = jest.fn().mockResolvedValue(mockComplaint);
+
+        await createComplaint(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(res.status).toHaveBeenCalledWith(201);
+        expect(res.json).toHaveBeenCalledWith({
+          newComplaint: mockComplaint,
+        });
+      });
+
+      test("And if it throw an error creating it should next with an error", async () => {
+        const error = CustomError(
+          400,
+          "Error creating a complaint",
+          "Couldn't create the complaint"
+        );
+        const req = {} as Partial<Request>;
+        const res: Partial<Response> = {
+          status: jest.fn().mockReturnThis(),
+          json: jest.fn().mockResolvedValue([]),
+        };
+        const next = jest.fn();
+        Complaint.create = jest.fn().mockRejectedValue(error);
+
+        await createComplaint(
+          req as Request,
+          res as Response,
+          next as NextFunction
+        );
+
+        expect(next).toHaveBeenCalledWith(error);
+      });
     });
   });
 });

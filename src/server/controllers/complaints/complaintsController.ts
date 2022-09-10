@@ -80,10 +80,10 @@ export const getComplaint = async (
 
   try {
     const { id } = req.params;
-    const complaintItem = await Complaint.findById(id);
+    const complaint = await Complaint.findById(id);
 
     debug(chalk.bgGreenBright("Complaint found!"));
-    res.status(200).json({ complaintItem });
+    res.status(200).json({ complaint });
   } catch (error) {
     const newError = CustomError(
       400,

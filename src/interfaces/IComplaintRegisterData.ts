@@ -5,6 +5,7 @@ interface IComplaintRegisterData {
   countComplaints: number;
   image: string;
   creationDate: Date;
+  location?: string;
 }
 
 export default IComplaintRegisterData;

@@ -25,6 +25,9 @@ const complaintSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  location: {
+    type: String,
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",

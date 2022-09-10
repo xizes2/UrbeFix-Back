@@ -189,7 +189,7 @@ describe("Given a method getComplaint of a complaints controller", () => {
     test("Then it should show the complaint with that id", async () => {
       const status = 200;
 
-      const expectedResponse = { complaintItem: mockComplaint };
+      const expectedResponse = { complaint: mockComplaint };
 
       Complaint.findById = jest.fn().mockReturnValue(mockComplaint);
 

@@ -31,5 +31,5 @@ export const generalError = (
       error.publicMessage ?? "Something went wrong, please try again";
   }
 
-  res.status(errorCode).json({ error: errorMessage });
+  res.status(errorCode).json({ error: error });
 };

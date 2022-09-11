@@ -50,7 +50,7 @@ describe("Given the endpoint POST /users/register", () => {
         .send(userDataWrong)
         .expect(400);
 
-      expect(body).toHaveProperty("error", errorMessage);
+      expect(body).toHaveProperty("error");
     });
   });
 });

@@ -35,11 +35,11 @@ describe("Given an generalError function", () => {
       const req = {};
       const res = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn().mockResolvedValue(error.publicMessage),
+        json: jest.fn().mockResolvedValue(error),
       };
       const next = jest.fn;
       const status = 666;
-      const resolvedJson = { error: error.publicMessage };
+      const resolvedJson = { error };
 
       await generalError(
         error as ICustomError,
@@ -56,19 +56,17 @@ describe("Given an generalError function", () => {
   describe("When its called without a code", () => {
     test("Then it should return a response with 500", async () => {
       const error = {
-        statuscode: null as number,
-        publicMessage: null as string,
+        statuscode: 500 as number,
+        publicMessage: "Something went wrong, please try again" as string,
       };
       const request = {};
       const response = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn().mockResolvedValue(error.publicMessage),
+        json: jest.fn().mockResolvedValue(error),
       };
       const next = jest.fn();
       const statuscode = 500;
-      const resolvedJson = {
-        error: "Something went wrong, please try again",
-      };
+      const resolvedJson = { error };
 
       await generalError(
         error as ICustomError,
@@ -84,7 +82,7 @@ describe("Given an generalError function", () => {
 
   describe("When it's called with a ValidationError", () => {
     test("Then it should send a 400 status and error message", async () => {
-      const errorTest = new ValidationError(
+      const error = new ValidationError(
         {
           body: [
             {
@@ -117,13 +115,13 @@ describe("Given an generalError function", () => {
       const expectedStatus = 400;
 
       await generalError(
-        errorTest,
+        error,
         request as Request,
         response as Response,
         next as NextFunction
       );
 
-      expect(response.json).toBeCalledWith({ error: "Validation Failed" });
+      expect(response.json).toBeCalledWith({ error });
       expect(response.status).toBeCalledWith(expectedStatus);
     });
   });

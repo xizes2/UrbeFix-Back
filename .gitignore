@@ -7,4 +7,4 @@ node_modules
 .ENV
 .env
 log.txt
-.uploads
+/uploads

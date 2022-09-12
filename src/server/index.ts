@@ -9,6 +9,7 @@ const app = Express();
 
 app.use(cors());
 app.use(morgan("dev"));
+app.use(Express.static("uploads"));
 app.use(Express.json());
 
 app.use("/users", usersRouter);

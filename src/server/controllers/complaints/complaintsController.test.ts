@@ -235,7 +235,7 @@ describe("Given a method getComplaint of a complaints controller", () => {
       description: "freno roto",
       countComplaint: 1,
       image: "biciRota.jpg",
-      location: "El Born",
+      location: [41.5, 2.17],
     };
     describe("When its createComplaint method is invoked", () => {
       test("then it should call the status method with a 201 and json with the complaint created", async () => {

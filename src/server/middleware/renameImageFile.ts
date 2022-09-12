@@ -15,7 +15,6 @@ const renameImageFile = async (
   debug(chalk.bgYellowBright("renameImageFile middleware requested..."));
   try {
     const { newComplaint } = req.body;
-    debug(chalk.bgMagentaBright(newComplaint));
 
     const complaint = await JSON.parse(newComplaint);
     const newName = `${Date.now()}${req.file.originalname}`;
@@ -25,8 +24,6 @@ const renameImageFile = async (
       path.join("uploads", req.file.filename),
       path.join("uploads", newName)
     );
-
-    complaint.image = newName;
 
     req.body = complaint;
 

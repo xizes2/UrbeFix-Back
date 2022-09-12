@@ -14,7 +14,7 @@ const complaintSchema = new Schema({
     required: false,
   },
   countComplaints: {
-    type: String,
+    type: Number,
     required: false,
   },
   image: {
@@ -26,7 +26,7 @@ const complaintSchema = new Schema({
     default: new Date(),
   },
   location: {
-    type: String,
+    type: [Number, Number],
   },
   owner: {
     type: Schema.Types.ObjectId,

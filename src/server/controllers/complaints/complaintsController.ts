@@ -15,7 +15,6 @@ export const getAllComplaints = async (
   debug(chalk.bgBlueBright("getAllComplaints method requested..."));
 
   let complaints: Array<IComplaintRegisterData>;
-
   try {
     complaints = await Complaint.find();
     if (complaints.length === 0) {

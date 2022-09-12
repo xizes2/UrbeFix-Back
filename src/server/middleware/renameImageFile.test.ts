@@ -14,7 +14,7 @@ describe("Given a parseData middleware", () => {
       title: "Fuente rota",
       countComplaints: 1,
       image: "fuente.jpg",
-      location: "Eixample",
+      location: [41.5, 2.17],
     };
 
     const complaintJson = JSON.stringify(mockedComplaint);

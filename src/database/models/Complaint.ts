@@ -28,6 +28,9 @@ const complaintSchema = new Schema({
   location: {
     type: [Number, Number],
   },
+  imageBackUp: {
+    type: String,
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",

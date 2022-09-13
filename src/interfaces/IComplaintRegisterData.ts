@@ -1,5 +1,3 @@
-import { NumberExpression } from "mongoose";
-
 interface IComplaintRegisterData {
   category: string;
   title: string;
@@ -7,7 +5,7 @@ interface IComplaintRegisterData {
   countComplaints: number;
   image: string;
   creationDate?: Date;
-  location?: [Number, Number];
+  location?: [number, number];
 }
 
 export default IComplaintRegisterData;

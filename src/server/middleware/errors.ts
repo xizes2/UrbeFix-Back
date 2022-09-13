@@ -26,8 +26,7 @@ export const generalError = (
     });
   } else {
     errorCode = error.statuscode ?? 500;
-    errorMessage =
-      error.publicMessage ?? "Something went wrong, please try again";
+    error.publicMessage ?? "Something went wrong, please try again";
   }
 
   res.status(errorCode).json({ error: error });

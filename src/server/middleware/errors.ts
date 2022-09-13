@@ -18,7 +18,6 @@ export const generalError = (
   next: NextFunction
 ) => {
   let errorCode;
-  let errorMessage;
   if (error instanceof ValidationError) {
     errorCode = error.statusCode ?? 400;
     error.details.body.forEach((errorInfo) => {
@@ -26,9 +25,7 @@ export const generalError = (
     });
   } else {
     errorCode = error.statuscode ?? 500;
-    errorMessage =
-      error.publicMessage ?? "Something went wrong, please try again";
   }
 
-  res.status(errorCode).json({ error: errorMessage });
+  res.status(errorCode).json({ error: error });
 };

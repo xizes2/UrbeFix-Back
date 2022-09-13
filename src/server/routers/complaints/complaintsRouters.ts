@@ -8,6 +8,7 @@ import {
 } from "../../controllers/complaints/complaintsController";
 import { authentication } from "../../middleware/authentication";
 import renameImageFile from "../../middleware/renameImageFile";
+import supaBaseUpload from "../../middleware/supaBaseUpload";
 
 const upload = multer({ dest: "uploads", limits: { fileSize: 3000000 } });
 const complaintsRouter = Router();
@@ -20,6 +21,7 @@ complaintsRouter.post(
   upload.single("image"),
   authentication,
   renameImageFile,
+  supaBaseUpload,
   createComplaint
 );
 

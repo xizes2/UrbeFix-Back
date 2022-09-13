@@ -20,3 +20,5 @@ jobs:
         env:
           SECRET: ${{ secrets.SECRET }}
           REACT_APP_API_URL: ${{env.REACT_APP_API_URL}}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}

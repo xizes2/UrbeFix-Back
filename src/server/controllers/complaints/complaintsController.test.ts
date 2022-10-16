@@ -20,6 +20,7 @@ describe("Given a method getAllComplaints of a complaints controller", () => {
     countComplaints: 1,
     image: "acera.jpg",
     creationDate: new Date(),
+    address: "Barcelona",
   };
 
   const reqTest = {} as Partial<Request>;

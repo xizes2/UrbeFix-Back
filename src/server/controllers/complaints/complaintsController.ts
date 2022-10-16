@@ -5,7 +5,7 @@ import Complaint from "../../../database/models/Complaint";
 import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
 import CustomError from "../../../utils/CustomError";
 
-const debug = Debug("urbefix:server:complaintsControllers");
+const debug = Debug("urbefix:server:complaintsController");
 
 export const getAllComplaints = async (
   req: Request,
@@ -76,7 +76,6 @@ export const getComplaint = async (
   next: NextFunction
 ) => {
   debug(chalk.bgBlueBright("getComplaint method requested..."));
-
   try {
     const { id } = req.params;
     const complaint = await Complaint.findById(id);
@@ -99,10 +98,13 @@ export const createComplaint = async (
   res: Response,
   next: NextFunction
 ) => {
+  debug(chalk.bgBlueBright("createComplaint method requested..."));
   const complaint: IComplaintRegisterData = req.body;
+
   try {
     const newComplaint = await Complaint.create(complaint);
     res.status(201).json({ newComplaint });
+    debug(chalk.bgGreenBright("Complaint created correctly!"));
   } catch (error) {
     const newError = CustomError(
       400,

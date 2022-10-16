@@ -28,6 +28,9 @@ const complaintSchema = new Schema({
   location: {
     type: [Number, Number],
   },
+  address: {
+    type: String,
+  },
   imageBackUp: {
     type: String,
   },

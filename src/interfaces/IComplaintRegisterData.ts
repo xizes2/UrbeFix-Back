@@ -6,6 +6,7 @@ interface IComplaintRegisterData {
   image: string;
   creationDate?: Date;
   location?: [number, number];
+  address: string;
 }
 
 export default IComplaintRegisterData;

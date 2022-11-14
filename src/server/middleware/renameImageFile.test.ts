@@ -16,6 +16,7 @@ describe("Given a parseData middleware", () => {
       image: "fuente.jpg",
       location: [41.5, 2.17],
       address: "Barcelona",
+      owner: "jkdshf7sdf9dshuf9s8",
     };
 
     const complaintJson = JSON.stringify(mockedComplaint);

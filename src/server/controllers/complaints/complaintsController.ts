@@ -2,7 +2,9 @@ import chalk from "chalk";
 import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import Complaint from "../../../database/models/Complaint";
+import { User } from "../../../database/models/User";
 import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
+import ICustomRequest from "../../../interfaces/ICustomRequest";
 import CustomError from "../../../utils/CustomError";
 
 const debug = Debug("urbefix:server:complaintsController");
@@ -94,15 +96,20 @@ export const getComplaint = async (
 };
 
 export const createComplaint = async (
-  req: Request,
+  req: ICustomRequest,
   res: Response,
   next: NextFunction
 ) => {
   debug(chalk.bgBlueBright("createComplaint method requested..."));
-  const complaint: IComplaintRegisterData = req.body;
+  const complaint = req.body;
+  complaint.owner = req.payload.id;
 
   try {
     const newComplaint = await Complaint.create(complaint);
+    const user = await User.findById(newComplaint.owner);
+    user.complaints.push(newComplaint.id);
+    user.save();
+
     res.status(201).json({ newComplaint });
     debug(chalk.bgGreenBright("Complaint created correctly!"));
   } catch (error) {

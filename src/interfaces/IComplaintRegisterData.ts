@@ -7,6 +7,7 @@ interface IComplaintRegisterData {
   creationDate?: Date;
   location?: [number, number];
   address: string;
+  owner: string;
 }
 
 export default IComplaintRegisterData;

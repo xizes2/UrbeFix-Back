@@ -7,7 +7,7 @@
     "build": "tsc",
     "ts:dev": "tsc -w",
     "test": "cross-env NODE_ENV=test jest src",
-    "test:dev": "jest src -w",
+    "test:dev": "jest src --watch",
     "start": "node .",
     "start:dev": "nodemon -q",
     "prepare": "husky install",

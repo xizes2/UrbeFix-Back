@@ -1,9 +1,8 @@
 import { NextFunction, Request, response, Response } from "express";
-import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
-import connectDatabase from "../../../database";
 import Complaint from "../../../database/models/Complaint";
+import { User } from "../../../database/models/User";
 import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
+import ICustomRequest from "../../../interfaces/ICustomRequest";
 import CustomError from "../../../utils/CustomError";
 import {
   createComplaint,
@@ -21,6 +20,7 @@ describe("Given a method getAllComplaints of a complaints controller", () => {
     image: "acera.jpg",
     creationDate: new Date(),
     address: "Barcelona",
+    owner: "jkdshf7sdf9dshuf9s8",
   };
 
   const reqTest = {} as Partial<Request>;
@@ -174,6 +174,7 @@ describe("Given a method getComplaint of a complaints controller", () => {
       "https://thumbs.dreamstime.com/z/contenedor-lleno-dos-y-muchos-bolsos-de-basura-en-la-calle-ciudad-monta%C3%B1a-146937943.jpg",
     title: "Contenedor lleno",
     id: "6318d3f81cd4447cf4787098",
+    owner: "jkdshf7sdf9dshuf9s8",
   };
 
   const reqTest = {
@@ -228,61 +229,104 @@ describe("Given a method getComplaint of a complaints controller", () => {
       expect(nextTest).toHaveBeenCalledWith(expectedResponse);
     });
   });
+});
 
-  describe("Given a complaints controller", () => {
-    const mockComplaint = {
+describe("Given a method createComplaint of a complaints controller", () => {
+  const mockComplaint = {
+    category: "Bicing",
+    title: "Bici rota",
+    description: "freno roto",
+    countComplaint: 1,
+    image: "biciRota.jpg",
+    location: [41.5, 2.17],
+    owner: "631254c916f7acfa6537dad0",
+    id: "6318d3f81cd4447cf4787098",
+  };
+
+  const mockUser = {
+    firstName: "Ana",
+    firstSurname: "Rubia",
+    profileImage: "rubia.jpg",
+    userEmail: "ana@gmail.com",
+    password: "hbsdkjvdsovuyds9vdskbvs",
+    complaints: [""],
+    save: jest.fn(),
+  };
+
+  const req = {
+    body: {
       category: "Bicing",
       title: "Bici rota",
       description: "freno roto",
       countComplaint: 1,
       image: "biciRota.jpg",
       location: [41.5, 2.17],
-    };
-    describe("When its createComplaint method is invoked", () => {
-      test("then it should call the status method with a 201 and json with the complaint created", async () => {
-        const req = {} as Partial<Request>;
-        const res: Partial<Response> = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn().mockResolvedValue({ newComplaint: mockComplaint }),
-        };
+      address: "Av. de Can Baró, 31, 08024 Barcelona, España",
+      imageBackUp:
+        "https://gddtzsfibvhkrjzrphxo.supabase.co/storage/v1/object/public/urbefix/1668679564937acera-rota.webp",
+    },
+    payload: { id: "631254c916f7acfa6537dad0" },
+  } as Partial<ICustomRequest>;
 
-        const next = jest.fn();
-        Complaint.create = jest.fn().mockResolvedValue(mockComplaint);
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
 
-        await createComplaint(
-          req as Request,
-          res as Response,
-          next as NextFunction
-        );
+  const next = jest.fn() as NextFunction;
 
-        expect(res.status).toHaveBeenCalledWith(201);
-        expect(res.json).toHaveBeenCalledWith({
-          newComplaint: mockComplaint,
-        });
+  Complaint.create = jest.fn().mockResolvedValue(mockComplaint);
+  User.findById = jest.fn().mockResolvedValue(mockUser);
+
+  describe("When instatiated with complaints data", () => {
+    test("then it should call the status method with a 201 and json with the complaint created", async () => {
+      await createComplaint(
+        req as ICustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith({
+        newComplaint: mockComplaint,
       });
+    });
 
-      test("And if it throw an error creating it should next with an error", async () => {
-        const error = CustomError(
-          400,
-          "Error creating a complaint",
-          "Couldn't create the complaint"
-        );
-        const req = {} as Partial<Request>;
-        const res: Partial<Response> = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn().mockResolvedValue([]),
-        };
-        const next = jest.fn();
-        Complaint.create = jest.fn().mockRejectedValue(error);
+    test("And if it throw an error creating it should next with an error", async () => {
+      const error = CustomError(
+        400,
+        "Error creating a complaint",
+        "Couldn't create the complaint"
+      );
+      const req = {
+        body: {
+          category: "Bicing",
+          title: "Bici rota",
+          description: "freno roto",
+          countComplaint: 1,
+          image: "biciRota.jpg",
+          location: [41.5, 2.17],
+          owner: "631254c916f7acfa6537dad0",
+        },
+        payload: { id: "631254c916f7acfa6537dad0" },
+      } as Partial<ICustomRequest>;
 
-        await createComplaint(
-          req as Request,
-          res as Response,
-          next as NextFunction
-        );
+      const res: Partial<Response> = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn().mockResolvedValue([]),
+      };
 
-        expect(next).toHaveBeenCalledWith(error);
-      });
+      const next = jest.fn();
+
+      Complaint.create = jest.fn().mockRejectedValue(error);
+
+      await createComplaint(
+        req as ICustomRequest,
+        res as Response,
+        next as NextFunction
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

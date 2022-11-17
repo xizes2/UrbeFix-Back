@@ -106,6 +106,7 @@ export const createComplaint = async (
 
   try {
     const newComplaint = await Complaint.create(complaint);
+
     const user = await User.findById(newComplaint.owner);
     user.complaints.push(newComplaint.id);
     user.save();

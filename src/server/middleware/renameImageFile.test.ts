@@ -28,7 +28,7 @@ describe("Given a parseData middleware", () => {
     jest.spyOn(fs, "rename").mockResolvedValue();
 
     const req = {
-      body: { newComplaint: complaintJson },
+      body: { complaint: complaintJson },
       file: { filename: "fuente", originalname: "fuente" },
     } as Partial<Request>;
 
@@ -48,7 +48,7 @@ describe("Given a parseData middleware", () => {
 
     test("If it get an error it must call the next function with the error created", async () => {
       const reqWithoutImage = {
-        body: { newComplaint: mockedComplaint },
+        body: { complaint: mockedComplaint },
       } as Partial<Request>;
 
       const newError = CustomError(404, "You must add", "Missing data");

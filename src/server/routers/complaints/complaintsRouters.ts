@@ -5,6 +5,7 @@ import {
   deleteComplaint,
   getComplaint,
   createComplaint,
+  editComplaint,
 } from "../../controllers/complaints/complaintsController";
 import { authentication } from "../../middleware/authentication";
 import renameImageFile from "../../middleware/renameImageFile";
@@ -23,6 +24,14 @@ complaintsRouter.post(
   renameImageFile,
   supaBaseUpload,
   createComplaint
+);
+complaintsRouter.put(
+  "/edit/:id",
+  upload.single("image"),
+  authentication,
+  renameImageFile,
+  supaBaseUpload,
+  editComplaint
 );
 
 export default complaintsRouter;

@@ -103,7 +103,6 @@ export const createComplaint = async (
   debug(chalk.bgBlueBright("createComplaint method requested..."));
   const complaint = req.body;
   complaint.owner = req.payload.id;
-
   try {
     const newComplaint = await Complaint.create(complaint);
 
@@ -120,6 +119,28 @@ export const createComplaint = async (
       "Couldn't create the complaint"
     );
 
+    next(newError);
+  }
+};
+
+export const editComplaint = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  debug(chalk.bgBlueBright("editComplaint method requested..."));
+  const { id } = req.params;
+  const editComplaint = req.body;
+  try {
+    let editedComplaint = await Complaint.findByIdAndUpdate(id, editComplaint);
+    editedComplaint = await Complaint.findById(id);
+    res.status(200).json({ editedComplaint });
+  } catch (error) {
+    const newError = CustomError(
+      400,
+      "Couldn't edit complaint.",
+      error.message
+    );
     next(newError);
   }
 };

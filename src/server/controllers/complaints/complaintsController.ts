@@ -132,15 +132,41 @@ export const editComplaint = async (
   const { id } = req.params;
   const editComplaint = req.body;
   try {
-    let editedComplaint = await Complaint.findByIdAndUpdate(id, editComplaint, {
-      new: true,
-    });
+    const editedComplaint = await Complaint.findByIdAndUpdate(
+      id,
+      editComplaint,
+      {
+        new: true,
+      }
+    );
 
     res.status(200).json({ editedComplaint });
   } catch (error) {
     const newError = CustomError(
       400,
       "Couldn't edit complaint.",
+      error.message
+    );
+    next(newError);
+  }
+};
+
+export const getcomplaintsByCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  debug(chalk.bgBlueBright("getComplaintsByCategory method requested..."));
+  const categorySelected = req.query.category;
+  try {
+    const complaintsByCategory = await Complaint.find({
+      category: categorySelected,
+    });
+    res.status(200).json({ complaintsByCategory });
+  } catch (error) {
+    const newError = CustomError(
+      404,
+      "No complaints in this category",
       error.message
     );
     next(newError);

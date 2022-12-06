@@ -6,6 +6,7 @@ import {
   getComplaint,
   createComplaint,
   editComplaint,
+  getcomplaintsByCategory,
 } from "../../controllers/complaints/complaintsController";
 import { authentication } from "../../middleware/authentication";
 import renameImageFile from "../../middleware/renameImageFile";
@@ -32,6 +33,11 @@ complaintsRouter.put(
   renameImageFile,
   supaBaseUpload,
   editComplaint
+);
+complaintsRouter.get(
+  "/filterbycategory",
+  authentication,
+  getcomplaintsByCategory
 );
 
 export default complaintsRouter;

@@ -132,8 +132,10 @@ export const editComplaint = async (
   const { id } = req.params;
   const editComplaint = req.body;
   try {
-    let editedComplaint = await Complaint.findByIdAndUpdate(id, editComplaint);
-    editedComplaint = await Complaint.findById(id);
+    let editedComplaint = await Complaint.findByIdAndUpdate(id, editComplaint, {
+      new: true,
+    });
+
     res.status(200).json({ editedComplaint });
   } catch (error) {
     const newError = CustomError(

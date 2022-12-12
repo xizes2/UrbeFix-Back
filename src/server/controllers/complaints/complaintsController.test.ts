@@ -12,7 +12,7 @@ import {
 } from "./complaintsController";
 
 describe("Given a method getAllComplaints of a complaints controller", () => {
-  const mockComplaintsArray: IComplaintRegisterData = {
+  const mockComplaint: IComplaintRegisterData = {
     category: "acera",
     title: "acera desnivelada",
     description: "acera está desnivelada por raiz de un árbol",
@@ -23,7 +23,7 @@ describe("Given a method getAllComplaints of a complaints controller", () => {
     owner: "jkdshf7sdf9dshuf9s8",
   };
 
-  const reqTest = {} as Partial<Request>;
+  const reqTest = { query: { page: "", limit: "" } } as Partial<Request>;
 
   const responseTest = {
     status: jest.fn().mockReturnThis(),
@@ -37,10 +37,10 @@ describe("Given a method getAllComplaints of a complaints controller", () => {
       const status = 200;
 
       const expectedResponse = {
-        complaints: [mockComplaintsArray],
+        complaints: [mockComplaint],
       };
 
-      Complaint.find = jest.fn().mockReturnValue([mockComplaintsArray]);
+      Complaint.find = jest.fn().mockReturnValue([mockComplaint]);
 
       await getAllComplaints(
         reqTest as Request,

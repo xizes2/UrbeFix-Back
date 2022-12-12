@@ -3,7 +3,6 @@ import Debug from "debug";
 import { NextFunction, Request, Response } from "express";
 import Complaint from "../../../database/models/Complaint";
 import { User } from "../../../database/models/User";
-import IComplaintRegisterData from "../../../interfaces/IComplaintRegisterData";
 import ICustomRequest from "../../../interfaces/ICustomRequest";
 import CustomError from "../../../utils/CustomError";
 
@@ -16,9 +15,14 @@ export const getAllComplaints = async (
 ) => {
   debug(chalk.bgBlueBright("getAllComplaints method requested..."));
 
-  let complaints: Array<IComplaintRegisterData>;
+  const { page = 1, limit = 5 } = req.query;
+
   try {
-    complaints = await Complaint.find();
+    const complaints = await Complaint.find()
+      .limit((limit as number) * 1)
+      .skip(((page as number) - 1) * (limit as number))
+      .exec();
+
     if (complaints.length === 0) {
       debug(chalk.bgRedBright("No complaints registered"));
       res.status(404).json({ complaints: "No complaints registered" });
@@ -157,11 +161,18 @@ export const getcomplaintsByCategory = async (
   next: NextFunction
 ) => {
   debug(chalk.bgBlueBright("getComplaintsByCategory method requested..."));
-  const categorySelected = req.query.category;
+
+  const { category } = req.query;
+  const { page = 1, limit = 5 } = req.query;
+
   try {
     const complaintsByCategory = await Complaint.find({
-      category: categorySelected,
-    });
+      category: category,
+    })
+      .limit((limit as number) * 1)
+      .skip(((page as number) - 1) * (limit as number))
+      .exec();
+
     res.status(200).json({ complaintsByCategory });
   } catch (error) {
     const newError = CustomError(
